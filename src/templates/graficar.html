@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block content  %}
+  <div class="row">
+    {% if 'imagen' in data %}
+      <div class="col-md-8 mx-auto">
+        <div class="card mb-3">
+          <div class="card-header">
+            <h3>Grafica de {{data.ecuacion}}</h3>
+          </div>
+          <img class="card-img-top" src="data:image/png;base64,{{data.imagen}}">
+        </div>
+      </div>
+    {% else %}
+      <div class="col-md-6 mx-auto">
+        <div class="card">
+          {% if 'error' in data %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>{{ data.error }}</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">
+              Gráficar ecuación
+            </h5>
+            <form action="/graficar" method="POST">
+              <div class="my-3">
+                <input 
+                  type="text" 
+                  class="form-control"
+                  name="ecuacion"
+                  placeholder="Ecuación, ejemplo: 0.089*x**4-2.55*x**3+22.48*x**2-59.68*x+19">
+              </div>
+              <div class="mb-3 row">
+                <label class="form-label">Datos para la gráfica: </label>
+                <div class="col-auto">
+                  <input 
+                    type="number" 
+                    step="any"
+                    class="form-control"
+                    name="limiteInferior"
+                    placeholder="Limite inferior">
+                </div>
+                <div class="col-auto">
+                  <input 
+                    type="number" 
+                    step="any"
+                    class="form-control"
+                    name="limiteSuperior"
+                    placeholder="Limite superior">
+                </div>
+              </div>
+              <button
+                class="btn btn-primary w-100">Graficar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

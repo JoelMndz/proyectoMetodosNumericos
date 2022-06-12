@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block content  %}
+  <div class="row">
+    {% if 'df' in data %}
+      <div class="col-md-8 mx-auto">
+        <div class="card mb-3">
+          <div class="card-header">
+            <h3>Resultados</h3>
+          </div>
+          <img class="card-img-top" src="data:image/png;base64,{{data.imagen}}">
+          <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>i</th>
+                  {% for i in data.df.columns %}
+                    <th>{{i}}</th>  
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in data.df.index %}
+                  <tr>
+                    <td>{{i}}</td>
+                    {% for j in data.df.columns %}
+                      <td>{{data.df[j][i]}}</td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="col-md-6 mx-auto">
+        <div class="card">
+          {% if 'error' in data %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>{{ data.error }}</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">
+              Método de aproximaciones sucesivas
+            </h5>
+            <form action="/aproximaciones" method="POST">
+              <div class="my-3">
+                <input 
+                  type="text" 
+                  class="form-control"
+                  name="ecuacion"
+                  placeholder="Ecuación, ejemplo: 0.089*x**4-2.55*x**3+22.48*x**2-59.68*x+19">
+              </div>
+              <div class="mb-3">
+                <input 
+                  type="number"
+                  name="x0"
+                  step="any"
+                  placeholder="X0"
+                  class="form-control">
+              </div>
+              <div class="mb-3">
+                <input 
+                  type="number"
+                  name="delta"
+                  step="any"
+                  placeholder="Delta x"
+                  class="form-control">
+              </div>
+              <div class="mb-3">
+                <input 
+                  type="number"
+                  name="epsilon"
+                  step="any"
+                  placeholder="Epsilon, ejemplo: 0.001"
+                  class="form-control">
+              </div>
+              <div class="mb-3 row">
+                <label class="form-label">Datos para la gráfica: </label>
+                <div class="col-auto">
+                  <input 
+                    type="number" 
+                    class="form-control"
+                    name="limiteInferior"
+                    step="any"
+                    placeholder="Limite inferior">
+                </div>
+                <div class="col-auto">
+                  <input 
+                    type="number" 
+                    class="form-control"
+                    name="limiteSuperior"
+                    step="any"
+                    placeholder="Limite superior">
+                </div>
+              </div>
+              <button
+                class="btn btn-primary w-100">Encontrar la raíz</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
